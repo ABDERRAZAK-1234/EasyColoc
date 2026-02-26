@@ -29,8 +29,12 @@ class ColocationController extends Controller
      */
     public function store(ColocationRequest $request)
     {
+        $colocation = Colocation::create($request->validated());
 
-        Colocation::create($request->validated());
+        auth()->user()->update([
+            'colocation_id' => $colocation->id,
+            'colocation_role' => 'owner'
+        ]);
 
         return redirect()->route('index');
     }
