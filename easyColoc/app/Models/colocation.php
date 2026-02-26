@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class colocation extends Model
+class Colocation extends Model
 {
-    public function users()
+    protected $fillable = ['titre','description'];
+    public function memberships()
     {
-        return $this->hasMany(User::class);
+        return $this->hasMany(Membership::class);
     }
 }

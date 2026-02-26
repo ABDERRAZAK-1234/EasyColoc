@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ColocationRequest;
-use App\Models\Colocation;
+use App\Models\invitation;
 use Illuminate\Http\Request;
 
-class ColocationController extends Controller
+class InvitationController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('colocation.index');
+        //
     }
 
     /**
@@ -21,24 +20,21 @@ class ColocationController extends Controller
      */
     public function create()
     {
-        return view('colocation.create');
+        //
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ColocationRequest $request)
+    public function store(Request $request)
     {
-
-        Colocation::create($request->validated());
-
-        return redirect()->route('index');
+        //
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(colocation $colocation)
+    public function show(invitation $invitation)
     {
         //
     }
@@ -46,7 +42,7 @@ class ColocationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(colocation $colocation)
+    public function edit(invitation $invitation)
     {
         //
     }
@@ -54,7 +50,7 @@ class ColocationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, colocation $colocation)
+    public function update(Request $request, invitation $invitation)
     {
         //
     }
@@ -62,7 +58,7 @@ class ColocationController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(colocation $colocation)
+    public function destroy(invitation $invitation)
     {
         //
     }

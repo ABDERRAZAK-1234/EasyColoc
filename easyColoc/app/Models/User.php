@@ -15,9 +15,9 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
-    public function colocation()
+    public function membership()
     {
-        return $this->belongsTo(Colocation::class);
+        return $this->hasMany(Membership::class);
     }
 
     /**
