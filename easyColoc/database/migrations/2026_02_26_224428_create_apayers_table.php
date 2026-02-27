@@ -11,16 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('memberships', function (Blueprint $table) {
+        Schema::create('apayers', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('colocation_id')->constrained()->cascadeOnDelete();
-            $table->enum('role', ['owner', 'member'])->default('member');
-            $table->date('joined_at')->nullable();
-            $table->date('left_at')->nullable();
+            $table->foreignId('depense_id')->constrained()->cascadeOnDelete();
+            $table->decimal('montant', 10, 2);
+            $table->string('status')->default('pending');
             $table->timestamps();
-
-            $table->unique(['user_id', 'colocation_id']);
         });
     }
 
@@ -29,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('memberships');
+        Schema::dropIfExists('apayers');
     }
 };

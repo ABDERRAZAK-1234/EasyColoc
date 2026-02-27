@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('reputations', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->integer('nombre')->default(0);
             $table->timestamps();
         });
     }

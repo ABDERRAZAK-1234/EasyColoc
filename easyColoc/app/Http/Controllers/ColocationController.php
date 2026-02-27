@@ -35,9 +35,10 @@ class ColocationController extends Controller
     {
         $colocation = Colocation::create($request->validated());
 
-        auth()->user()->update([
-            'colocation_id' => $colocation->id,
-            'colocation_role' => 'owner'
+        $colocation->memberships()->create([
+            'user_id' => auth()->id(),
+            'role' => 'owner',
+            'joined_at' => now(),
         ]);
 
         return redirect()->route('colocations.index');
@@ -63,9 +64,11 @@ class ColocationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Colocation $colocation)
+    public function update(ColocationRequest $request, Colocation $colocation)
     {
-        //
+        $colocation->update($request->validated());
+        return redirect()->route('colocations.index')
+            ->with('success', 'Colocation mise à jour avec succès.');
     }
 
     /**
