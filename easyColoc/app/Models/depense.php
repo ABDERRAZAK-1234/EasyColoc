@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Depense extends Model
 {
 
-
+protected $fillable = ['titre','montant','date','colocation_id'];
     public function colocation()
     {
         return $this->belongsTo(Colocation::class);

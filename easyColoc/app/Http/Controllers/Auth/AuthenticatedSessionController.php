@@ -35,7 +35,7 @@ class AuthenticatedSessionController extends Controller
             return redirect()->route('admin.dashboard');
         }
 
-        return redirect()->route('index');
+        return redirect()->route('colocations.index');
     }
 
     /**

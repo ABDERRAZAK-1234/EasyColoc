@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DepenseRequest;
+use App\Models\Colocation;
 use App\Models\depense;
 use Illuminate\Http\Request;
 
@@ -26,9 +28,15 @@ class DepenseController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(DepenseRequest $request, Colocation $colocation)
     {
-        //
+        $colocation->depenses()->create([
+            ...$request->validated(),
+            'user_id' => auth()->id(),
+        ]);
+
+        return redirect()->route('colocations.show', $colocation)
+            ->with('success', 'Dépense ajoutée avec succès.');
     }
 
     /**
@@ -58,8 +66,11 @@ class DepenseController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(depense $depense)
+    public function destroy(Colocation $colocation, Depense $depense)
     {
-        //
+        $depense->delete();
+
+        return redirect()->route('colocations.show', $colocation)
+            ->with('success', 'Dépense supprimée.');
     }
 }
