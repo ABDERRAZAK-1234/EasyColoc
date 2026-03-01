@@ -1,9 +1,9 @@
 <?php
 
+use App\Enums\UserRole;
 use App\Http\Controllers\ColocationController;
 use App\Http\Controllers\DepenseController;
 use App\Http\Controllers\ProfileController;
-use App\Models\Colocation;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -12,23 +12,44 @@ Route::get('/', function () {
 
 Route::middleware('auth')->group(function () {
 
-    // colocations
+    // user profile
+    Route::get('/colocations/profile', function () {
+        return view('colocations.profile');
+    })->name('colocations.profile');
+
+
+    // colocation
     Route::resource('colocations', ColocationController::class);
 
-    // depenses
+
+    // depence
     Route::post('colocations/{colocation}/depenses', [DepenseController::class, 'store'])
         ->name('depenses.store');
 
     Route::delete('colocations/{colocation}/depenses/{depense}', [DepenseController::class, 'destroy'])
         ->name('depenses.destroy');
 
-    // admin dashboard
-    Route::get('/admin/dashboard', function () {
-        $colocations = Colocation::with('memberships')->latest()->get();
-        return view('dashboard', compact('colocations'));
-    })->name('admin.dashboard');
 
-    // profile
+    // dashboard
+    Route::get('/dashboard', function () {
+
+        $user = auth()->user();
+
+        // dashboard admin
+        if ($user->role === UserRole::ADMIN) {
+            return redirect()->route('admin.dashboard');
+        }
+
+        //  profile colocation
+        if ($user->role === UserRole::USER) {
+            return redirect()->route('colocations.profile');
+        }
+
+        return redirect('/');
+    })->name('dashboard');
+
+
+    // ADMIN PROFILE
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
