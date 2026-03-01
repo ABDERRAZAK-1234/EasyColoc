@@ -40,6 +40,9 @@ class ColocationController extends Controller
             'role' => 'owner',
             'joined_at' => now(),
         ]);
+        auth()->user()->update([
+        'colocation_id' => $colocation->id
+        ]);
 
         return redirect()->route('colocations.index');
     }
