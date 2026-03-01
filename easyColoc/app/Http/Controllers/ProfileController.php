@@ -30,19 +30,19 @@ class ProfileController extends Controller
 
         $user->fill($request->validated());
 
-        // ila tbdel email
         if ($user->isDirty('email')) {
             $user->email_verified_at = null;
         }
 
-        // ila kayn password jdida
-        if ($request->filled('password')) {
-            $user->password = bcrypt($request->password);
-        }
-
         $user->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        $membership = $user->memberships()->first();
+        if ($membership) {
+            return redirect()->route('colocations.show', $membership->colocation)
+                ->with('status', 'profile-updated');
+        }
+
+        return redirect()->route('dashboard')->with('status', 'profile-updated');
     }
 
     /**
