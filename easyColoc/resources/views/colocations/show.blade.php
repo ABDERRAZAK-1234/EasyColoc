@@ -25,7 +25,7 @@
                class="flex items-center gap-2 p-3 rounded-lg bg-indigo-50 text-indigo-600 font-semibold">
                <i class="fa-solid fa-users"></i> Colocations
             </a>
-            <a href="#" class="flex items-center gap-2 p-3 rounded-lg text-gray-400 hover:bg-gray-50">
+            <a href="{{ route('colocations.profile',$colocation) }}" class="flex items-center gap-2 p-3 rounded-lg text-gray-400 hover:bg-gray-50">
                <i class="fa-solid fa-user"></i> Profile
             </a>
         </nav>
