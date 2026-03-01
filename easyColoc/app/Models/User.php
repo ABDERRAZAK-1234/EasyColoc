@@ -15,7 +15,7 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
-    public function membership()
+    public function memberships()
     {
         return $this->hasMany(Membership::class);
     }
@@ -31,6 +31,7 @@ class User extends Authenticatable
         'password',
         'role',
         'colocation_role',
+        'colocation_id'
     ];
 
     /**
