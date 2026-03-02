@@ -13,11 +13,14 @@ class ColocationController extends Controller
      */
     public function index()
     {
-        $colocations = Colocation::with('memberships.user')
+        $colocation = Colocation::whereHas('memberships', function ($query) {
+            $query->where('user_id', auth()->id());
+        })
+            ->with('memberships.user')
             ->latest()
-            ->get();
+            ->first();
 
-        return view('colocations.index', compact('colocations'));
+        return view('colocations.index', compact('colocation'));
     }
 
     /**
@@ -41,7 +44,7 @@ class ColocationController extends Controller
             'joined_at' => now(),
         ]);
         auth()->user()->update([
-        'colocation_id' => $colocation->id
+            'colocation_id' => $colocation->id
         ]);
 
         return redirect()->route('colocations.index');

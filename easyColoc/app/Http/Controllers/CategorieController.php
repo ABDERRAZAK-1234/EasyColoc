@@ -2,64 +2,78 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\categorie;
+use App\Models\Categorie;
 use Illuminate\Http\Request;
 
 class CategorieController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of categories.
      */
     public function index()
     {
-        //
+        $categories = Categorie::latest()->get();
+        return view('categories.index', compact('categories'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new category.
      */
     public function create()
     {
-        //
+        return view('categories.create');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created category.
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'titre' => 'required|string|max:255|unique:categories',
+        ]);
+
+        Categorie::create([
+            'titre' => $request->titre,
+        ]);
+
+        return redirect()->route('categories.index')
+            ->with('success', 'Categorie créée avec succès.');
     }
 
     /**
-     * Display the specified resource.
+     * Show the form for editing a category.
      */
-    public function show(categorie $categorie)
+    public function edit(Categorie $category)
     {
-        //
+        return view('categories.edit', compact('category'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Update the specified category.
      */
-    public function edit(categorie $categorie)
+    public function update(Request $request, Categorie $category)
     {
-        //
+        $request->validate([
+            'titre' => 'required|string|max:255|unique:categories,titre,' . $category->id,
+        ]);
+
+        $category->update([
+            'titre' => $request->titre,
+        ]);
+
+        return redirect()->route('categories.index')
+            ->with('success', 'Categorie mise à jour avec succès.');
     }
 
     /**
-     * Update the specified resource in storage.
+     * Remove the specified category.
      */
-    public function update(Request $request, categorie $categorie)
+    public function destroy(Categorie $category)
     {
-        //
-    }
+        $category->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(categorie $categorie)
-    {
-        //
+        return redirect()->route('categories.index')
+            ->with('success', 'Categorie supprimée avec succès.');
     }
 }
