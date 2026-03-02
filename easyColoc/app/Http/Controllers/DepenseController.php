@@ -35,7 +35,7 @@ class DepenseController extends Controller
             'user_id' => auth()->id(),
         ]);
 
-        return redirect()->route('colocations.show', $colocation)
+        return redirect()->route('colocations.index', $colocation)
             ->with('success', 'Dépense ajoutée avec succès.');
     }
 
@@ -52,7 +52,7 @@ class DepenseController extends Controller
      */
     public function edit(depense $depense)
     {
-        //
+        return view('depense.edit', compact('depense'));
     }
 
     /**

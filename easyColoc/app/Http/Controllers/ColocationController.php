@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ColocationRequest;
+use App\Models\Categorie;
 use App\Models\Colocation;
 use Illuminate\Http\Request;
 
@@ -20,7 +21,9 @@ class ColocationController extends Controller
             ->latest()
             ->first();
 
-        return view('colocations.index', compact('colocation'));
+        $categories = Categorie::all();
+
+        return view('colocations.index', compact('colocation', 'categories'));
     }
 
     /**
