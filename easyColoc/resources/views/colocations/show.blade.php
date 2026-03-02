@@ -30,7 +30,7 @@
         </div>
 
         {{-- Grid des colocations --}}
-        @if ($colocations->isEmpty())
+        @if (!$colocation)
             <div class="bg-white p-10 rounded-lg border border-gray-200 text-center">
                 <i class="fa-solid fa-house-circle-xmark text-indigo-500 text-4xl mb-3"></i>
                 <h2 class="text-lg font-bold mb-1">Aucune colocation pour l'instant</h2>
@@ -42,7 +42,7 @@
             </div>
         @else
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                @foreach ($colocations as $colocation)
+                @if ($colocation)
                     <div class="bg-white p-4 rounded-lg border border-gray-200 flex flex-col justify-between">
 
                         {{-- Titre et Description --}}
@@ -98,7 +98,7 @@
                         </div>
 
                     </div>
-                @endforeach
+                @endif
             </div>
         @endif
 

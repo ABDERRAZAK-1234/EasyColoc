@@ -70,7 +70,7 @@ class DepenseController extends Controller
     {
         $depense->delete();
 
-        return redirect()->route('colocations.show', $colocation)
+        return redirect()->route('colocations.index', $colocation)
             ->with('success', 'Dépense supprimée.');
     }
 }

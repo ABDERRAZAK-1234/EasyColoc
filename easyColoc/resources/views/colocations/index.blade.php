@@ -38,11 +38,20 @@
                 <i class="fa-solid fa-users"></i> Colocations
             </a>
             @if ($colocation)
-                <a href="{{ route('colocations.profile', $colocation) }}"
-                    class="flex items-center gap-2 p-3 rounded-lg text-gray-400 hover:bg-gray-50">
-                    <i class="fa-solid fa-user"></i> Profile
-                </a>
+                <div class="flex items-center justify-between p-3 border-b">
+                    <span>{{ $colocation->nom }}</span>
+                    <a href="{{ route('colocations.profile', $colocation) }}"
+                        class="px-2 py-1 bg-indigo-100 text-indigo-700 rounded text-xs font-bold">
+                        Profile
+                    </a>
+                </div>
             @endif
+
+            {{-- Categories Button --}}
+            <a href="{{ route('categories.index') }}"
+                class="flex items-center gap-2 p-3 rounded-lg text-gray-400 hover:bg-gray-50">
+                <i class="fa-solid fa-list"></i> Categories
+            </a>
         </nav>
 
         {{-- Reputation card --}}
@@ -156,6 +165,7 @@
                             <th class="py-2 text-left font-bold">Titre</th>
                             <th class="py-2 text-left font-bold">Payeur</th>
                             <th class="py-2 text-left font-bold">Montant</th>
+                            <th class="py-2 text-left font-bold">Categorie</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -164,6 +174,9 @@
                                 <td class="py-2 font-semibold">{{ $depense->titre }}</td>
                                 <td class="py-2">{{ $depense->user->nom ?? '-' }}</td>
                                 <td class="py-2 font-bold text-indigo-600">{{ number_format($depense->montant, 2) }} €
+                                </td>
+                                <td class="py-2 font-bold text-indigo-600">
+                                    {{ $depense->categorie->titre ?? '-' }}
                                 </td>
                             </tr>
                         @empty
@@ -216,12 +229,30 @@
                     class="fa-solid fa-xmark"></i></button>
             <h3 class="font-bold mb-3">Nouvelle dépense</h3>
             @if ($colocation)
-                <form action="{{ route('depenses.store', $colocation) }}" method="POST">
+                <form action="{{ route('depenses.store', $colocation) }}" method="POST" class="space-y-3">
                     @csrf
-                    <input type="text" name="titre" placeholder="Titre" required>
-                    <input type="number" name="montant" placeholder="Montant" required>
-                    <input type="date" name="date" value="{{ date('Y-m-d') }}" required>
-                    <button type="submit">Ajouter</button>
+                    <input type="text" name="titre" placeholder="Titre" required
+                        class="w-full p-2 border rounded-lg text-sm">
+                    <input type="number" name="montant" placeholder="Montant" required
+                        class="w-full p-2 border rounded-lg text-sm">
+                    <input type="date" name="date" value="{{ date('Y-m-d') }}" required
+                        class="w-full p-2 border rounded-lg text-sm">
+
+                    {{-- Select Catégorie --}}
+                    <select name="categorie_id" required class="w-full p-2 border rounded-lg text-sm">
+                        <option value="" disabled selected>Choisir une catégorie</option>
+                        @foreach ($categories as $cat)
+                            <option value="{{ $cat->id }}">{{ $cat->titre }}</option>
+                        @endforeach
+                    </select>
+
+                    <div class="flex justify-end gap-2">
+                        <button type="button"
+                            onclick="document.getElementById('modal-depense').classList.add('hidden')"
+                            class="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-100 transition">Annuler</button>
+                        <button type="submit"
+                            class="px-4 py-2 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition">Ajouter</button>
+                    </div>
                 </form>
             @else
                 <p>Vous devez créer une colocation pour ajouter une dépense.</p>
@@ -243,26 +274,20 @@
                     @csrf
                     <input type="email" name="email" placeholder="Email" required
                         class="w-full p-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 transition">
-
                     <div class="flex justify-end gap-3">
                         <button type="button"
                             onclick="document.getElementById('modal-invite').classList.add('hidden')"
-                            class="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
-                            Annuler
-                        </button>
+                            class="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-100 transition">Annuler</button>
                         <button type="submit"
-                            class="px-4 py-2 bg-green-500 text-white rounded-lg font-semibold hover:bg-green-600 transition">
-                            Inviter
-                        </button>
+                            class="px-4 py-2 bg-green-500 text-white rounded-lg font-semibold hover:bg-green-600 transition">Inviter</button>
                     </div>
                 </form>
             @else
                 <div class="text-center space-y-3 p-6 bg-yellow-50 border border-yellow-200 rounded-lg">
                     <p class="text-gray-700 font-medium">Vous devez créer une colocation avant d’inviter un membre.</p>
                     <a href="{{ route('colocations.create') }}"
-                        class="inline-block px-4 py-2 bg-yellow-400 text-white rounded-lg font-bold hover:bg-yellow-500 transition">
-                        Créer Colocation
-                    </a>
+                        class="inline-block px-4 py-2 bg-yellow-400 text-white rounded-lg font-bold hover:bg-yellow-500 transition">Créer
+                        Colocation</a>
                 </div>
             @endif
         </div>
