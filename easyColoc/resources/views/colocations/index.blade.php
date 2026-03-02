@@ -165,18 +165,41 @@
                             <th class="py-2 text-left font-bold">Titre</th>
                             <th class="py-2 text-left font-bold">Payeur</th>
                             <th class="py-2 text-left font-bold">Montant</th>
+                            <th class="py-2 text-left font-bold">Date</th>
                             <th class="py-2 text-left font-bold">Categorie</th>
+                            <th class="py-2 text-right font-bold">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse ($colocation->depenses ?? [] as $depense)
                             <tr class="border-b hover:bg-gray-50">
                                 <td class="py-2 font-semibold">{{ $depense->titre }}</td>
-                                <td class="py-2">{{ $depense->user->nom ?? '-' }}</td>
+                                <td class="py-2">{{ $depense->user->name ?? '-' }}</td>
+                                <td class="py-2">{{ \Carbon\Carbon::parse($depense->date)->format('d/m/Y') }}</td>
                                 <td class="py-2 font-bold text-indigo-600">{{ number_format($depense->montant, 2) }} €
                                 </td>
                                 <td class="py-2 font-bold text-indigo-600">
                                     {{ $depense->categorie->titre ?? '-' }}
+                                </td>
+                                <td class="py-2 text-right space-x-3">
+
+                                    {{-- EDIT DEPENSE --}}
+                                    <a href="{{ route('colocations.depenses.edit', [$colocation, $depense]) }}"
+                                        class="text-indigo-500 hover:text-indigo-700">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </a>
+
+                                    {{-- DELETE DEPENSE --}}
+                                    <form action="{{ route('colocations.depenses.destroy', [$colocation, $depense]) }}"
+                                        method="POST" class="inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" onclick="return confirm('Supprimer cette dépense ?')"
+                                            class="text-red-500 hover:text-red-700">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </form>
+
                                 </td>
                             </tr>
                         @empty
@@ -229,7 +252,8 @@
                     class="fa-solid fa-xmark"></i></button>
             <h3 class="font-bold mb-3">Nouvelle dépense</h3>
             @if ($colocation)
-                <form action="{{ route('depenses.store', $colocation) }}" method="POST" class="space-y-3">
+                <form action="{{ route('colocations.depenses.store', $colocation) }}" method="POST"
+                    class="space-y-3">
                     @csrf
                     <input type="text" name="titre" placeholder="Titre" required
                         class="w-full p-2 border rounded-lg text-sm">
