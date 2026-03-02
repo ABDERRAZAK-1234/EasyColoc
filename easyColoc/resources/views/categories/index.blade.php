@@ -13,14 +13,24 @@
 
     <div class="max-w-5xl mx-auto py-10">
 
+        {{-- HEADER --}}
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-2xl font-bold text-indigo-600">Categories</h1>
-            <a href="{{ route('categories.create') }}"
-                class="px-4 py-2 bg-green-500 text-white rounded-lg font-bold hover:bg-green-600">
-                <i class="fa-solid fa-plus"></i> Ajouter Category
-            </a>
+
+            <div class="space-x-2">
+                <a href="{{ route('colocations.index') }}"
+                    class="px-4 py-2 bg-indigo-500 text-white rounded-lg font-bold hover:bg-indigo-600">
+                    <i class="fa-solid fa-arrow-left"></i> Retour Colocations
+                </a>
+
+                <a href="{{ route('categories.create') }}"
+                    class="px-4 py-2 bg-green-500 text-white rounded-lg font-bold hover:bg-green-600">
+                    <i class="fa-solid fa-plus"></i> Ajouter Category
+                </a>
+            </div>
         </div>
 
+        {{-- TABLE --}}
         <div class="bg-white rounded-lg shadow overflow-hidden">
             <table class="w-full text-sm text-left">
                 <thead class="bg-gray-50 text-gray-500 uppercase text-xs">
@@ -61,6 +71,7 @@
         </div>
 
     </div>
+
 </body>
 
 </html>
